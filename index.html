@@ -88,10 +88,10 @@
 
   /* ── HERO ── */
   #hero {
-    min-height: 100vh;
+    min-height: clamp(620px, 88vh, 820px);
     background: #f8f7f2;
     display: flex; align-items: center;
-    padding: 100px 5% 60px;
+    padding: 84px 5% 48px;
     position: relative;
     overflow: hidden;
   }
@@ -196,6 +196,12 @@
     display: flex; flex-direction: column; gap: 0.8rem;
     right: -20px; top: 50%; transform: translateY(-50%);
   }
+  @media (min-width: 1200px) {
+    .hero-content { gap: 3rem; }
+    .hero-image-wrap { padding-right: 120px; }
+    .hero-avatar { width: 340px; height: 460px; }
+    .hero-stat-cards { right: 8px; }
+  }
   .stat-card {
     background: rgba(248,247,242,0.85);
     backdrop-filter: blur(10px);
@@ -254,7 +260,7 @@
   #skills { background: var(--light); }
   .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5rem;
   }
   .skill-card {
@@ -264,19 +270,9 @@
     box-shadow: 0 2px 20px rgba(0,0,0,0.06);
     border: 1px solid var(--border);
     transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
+    transform-origin: center;
   }
-  .skill-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--teal);
-    transform: scaleX(0);
-    transition: transform 0.3s;
-  }
-  .skill-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
-  .skill-card:hover::before { transform: scaleX(1); }
+  .skill-card:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
   .skill-icon {
     width: 52px; height: 52px;
     background: var(--teal-light);
@@ -325,13 +321,15 @@
   /* ── CERTS CAROUSEL ── */
   .certs-carousel-wrap {
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: visible;
   }
   .certs-track {
     display: flex;
     gap: 1.2rem;
     cursor: grab;
     user-select: none;
+    padding-top: 8px;
     padding-bottom: 1rem;
     transition: transform 0.35s cubic-bezier(.4,0,.2,1);
   }
@@ -355,24 +353,7 @@
     width: 22px;
     border-radius: 4px;
   }
-  .certs-arrow {
-    position: absolute;
-    top: 50%; transform: translateY(-60%);
-    width: 38px; height: 38px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border);
-    background: var(--white);
-    color: var(--dark);
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 2;
-    transition: all 0.2s;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-  }
-  .certs-arrow:hover { background: var(--teal); color: #f8f7f2; border-color: var(--teal); }
-  .certs-arrow.prev { left: -18px; }
-  .certs-arrow.next { right: -18px; }
+
   .cert-card {
     border: 2px solid var(--border);
     border-radius: 18px;
@@ -411,34 +392,80 @@
 
   /* ── EXPERIENCE ── */
   #experience { background: var(--light); }
-  .exp-list { display: flex; flex-direction: column; gap: 1.5rem; }
+  .exp-list {
+    display: flex; flex-direction: column; gap: 0;
+    position: relative;
+  }
+  .exp-list::before {
+    content: '';
+    position: absolute;
+    left: 22px; top: 8px; bottom: 8px;
+    width: 1px;
+    background: var(--border);
+    z-index: 0;
+  }
   .exp-item {
-    background: white;
-    border-radius: 18px;
-    padding: 2rem;
-    border-left: 4px solid var(--teal);
-    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
     display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 1rem;
+    grid-template-columns: 48px 1fr auto;
+    gap: 1.2rem;
+    align-items: start;
+    padding: 0 0 2.2rem 0;
+    position: relative;
+  }
+  .exp-item:last-child { padding-bottom: 0; }
+  .exp-num {
+    width: 44px; height: 44px; min-width: 44px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem; font-weight: 700;
+    color: var(--teal);
+    position: relative; z-index: 1;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .exp-item:hover .exp-num {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #f8f7f2;
+  }
+  .exp-body {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.4rem 1.6rem;
+    border: 1px solid var(--border);
     transition: all 0.2s;
   }
-  .exp-item:hover { transform: translateX(4px); box-shadow: 0 6px 25px rgba(0,0,0,0.08); }
+  .exp-item:hover .exp-body {
+    border-color: var(--teal);
+    box-shadow: 0 6px 24px rgba(204,74,52,0.08);
+    transform: translateY(-2px);
+  }
   .exp-role {
-    font-size: 1rem; font-weight: 700; color: var(--dark);
+    font-size: 0.98rem; font-weight: 700; color: var(--dark);
     margin-bottom: 0.2rem;
   }
-  .exp-company { font-size: 0.88rem; color: var(--teal); font-weight: 600; margin-bottom: 0.6rem; }
-  .exp-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.7; }
+  .exp-company {
+    font-size: 0.82rem; color: var(--teal); font-weight: 600;
+    margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .exp-company::before {
+    content: '';
+    width: 14px; height: 1px;
+    background: var(--teal);
+    display: inline-block;
+  }
+  .exp-desc { font-size: 0.84rem; color: var(--text-light); line-height: 1.75; }
   .exp-period {
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     color: var(--text-light);
-    background: var(--teal-light);
-    padding: 4px 12px;
-    border-radius: 20px;
-    height: fit-content;
     white-space: nowrap;
     font-weight: 500;
+    padding-top: 14px;
+    text-align: right;
+    flex-shrink: 0;
   }
 
   /* ── PORTFOLIO ── */
@@ -459,9 +486,14 @@
   .portfolio-thumb {
     height: 200px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 3rem;
     position: relative;
     overflow: hidden;
+  }
+  .portfolio-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .portfolio-thumb .overlay {
     position: absolute; inset: 0;
@@ -469,10 +501,16 @@
     display: flex; align-items: center; justify-content: center;
     opacity: 0;
     transition: opacity 0.3s;
-    color: white;
-    font-size: 2.5rem;
+  }
+  .portfolio-thumb .overlay img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.95;
   }
   .portfolio-card:hover .overlay { opacity: 1; }
+  .portfolio-card { cursor: pointer; }
   .portfolio-info {
     padding: 1.4rem;
     background: white;
@@ -513,6 +551,7 @@
     gap: 4rem;
     align-items: start;
   }
+  .contact-intro { margin-bottom: 2rem; }
   .contact-info { display: flex; flex-direction: column; gap: 1.2rem; }
   .contact-item {
     display: flex; gap: 1rem; align-items: center;
@@ -566,6 +605,9 @@
     opacity: 1;
     transform: translateY(0);
   }
+  .skill-card.fade-up.visible:hover {
+    transform: translateY(0) scale(1.05);
+  }
 
   /* ── MOBILE NAV ── */
   .mobile-menu {
@@ -599,9 +641,11 @@
     .hero-btns { justify-content: center; }
 
     .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-intro { margin-bottom: 1.4rem; }
 
     section { padding: 60px 4%; }
-    .exp-item { grid-template-columns: 1fr; }
+    .exp-item { grid-template-columns: 44px 1fr; gap: 0.8rem; }
+    .exp-period { display: none; }
   }
 
   @media (max-width: 480px) {
@@ -659,6 +703,42 @@
     width: 0%;
     transition: width 2.5s ease;
     border-radius: 4px;
+  }
+
+  /* ── PORTFOLIO IMAGE MODAL ── */
+  .portfolio-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.82);
+    z-index: 220;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .portfolio-modal.show { display: flex; }
+  .portfolio-modal img {
+    max-width: min(1100px, 92vw);
+    max-height: 88vh;
+    width: auto;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 18px 48px rgba(0,0,0,0.35);
+    background: #fff;
+  }
+  .portfolio-modal-close {
+    position: absolute;
+    top: 18px;
+    right: 24px;
+    border: none;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
   }
 </style>
 </head>
@@ -806,8 +886,6 @@
       <p class="section-sub">노력한 만큼 인정받은 공식 자격들입니다.</p>
     </div>
     <div class="certs-carousel-wrap fade-up">
-      <button class="certs-arrow prev" id="certPrev">&#8592;</button>
-      <button class="certs-arrow next" id="certNext">&#8594;</button>
       <div class="certs-track" id="certsTrack">
         <div class="cert-card">
           <div>
@@ -836,7 +914,7 @@
         <div class="cert-card">
           <div>
             <div class="cert-name">교내 디자인 공모전 최우수상</div>
-            <div class="cert-org">○○예술고등학교</div>
+            <div class="cert-org">뷰티예술고등학교</div>
             <div class="cert-date">2024. 11</div>
             <span class="cert-status acquired">수상</span>
           </div>
@@ -857,36 +935,40 @@
     </div>
     <div class="exp-list">
       <div class="exp-item fade-up">
-        <div>
-          <div class="exp-role">시각디자인 전공 수업 심화과정</div>
-          <div class="exp-company">○○예술고등학교 · 시각디자인과</div>
+        <div class="exp-num">01</div>
+        <div class="exp-body">
+          <div class="exp-period">2023 – 현재</div>
+          <div class="exp-role">시각영상디자인 전공 수업 심화과정</div>
+          <div class="exp-company">뷰티예술고등학교 · 시각영상디자인과</div>
           <div class="exp-desc">브랜드 아이덴티티(BI), 편집 디자인, 포스터 제작, 영상 편집 등 전공 실기 전 과정 이수. Illustrator·Photoshop·InDesign 집중 실습.</div>
         </div>
-        <div class="exp-period">2023 – 현재</div>
       </div>
       <div class="exp-item fade-up" style="transition-delay:0.05s">
-        <div>
+        <div class="exp-num">02</div>
+        <div class="exp-body">
+          <div class="exp-period">2024. 03 – 2024. 12</div>
           <div class="exp-role">교내 학교 홍보물 디자인</div>
           <div class="exp-company">학생 자치회 홍보부</div>
           <div class="exp-desc">학교 행사 포스터, SNS 카드뉴스, 현수막 시안 제작 담당. 실제 인쇄 납품까지 전 과정 경험.</div>
         </div>
-        <div class="exp-period">2024. 03 – 2024. 12</div>
       </div>
       <div class="exp-item fade-up" style="transition-delay:0.1s">
-        <div>
+        <div class="exp-num">03</div>
+        <div class="exp-body">
+          <div class="exp-period">2024. 06 – 2024. 08</div>
           <div class="exp-role">지역 소상공인 SNS 콘텐츠 제작 (재능 기부)</div>
           <div class="exp-company">지역 카페 / 공방 3곳</div>
           <div class="exp-desc">인스타그램용 카드뉴스, 메뉴판, 로고 리터치 등 실제 브랜드 적용 경험. 클라이언트 피드백 반영 과정 습득.</div>
         </div>
-        <div class="exp-period">2024. 06 – 2024. 08</div>
       </div>
       <div class="exp-item fade-up" style="transition-delay:0.15s">
-        <div>
+        <div class="exp-num">04</div>
+        <div class="exp-body">
+          <div class="exp-period">2024</div>
           <div class="exp-role">디자인 공모전 참여</div>
           <div class="exp-company">교내 공모전 최우수 / 외부 공모전 2회</div>
           <div class="exp-desc">브랜드 리브랜딩 공모, 환경 캠페인 포스터 공모 등 출품. 실제 심사 기준에 맞는 작품 제작 경험.</div>
         </div>
-        <div class="exp-period">2024</div>
       </div>
     </div>
   </div>
@@ -901,10 +983,10 @@
       <p class="section-sub">직접 기획하고 완성한 대표 작업들입니다.</p>
     </div>
     <div class="portfolio-grid">
-      <div class="portfolio-card fade-up">
+      <div class="portfolio-card fade-up" data-portfolio="01">
         <div class="portfolio-thumb" style="background:#0a303d">
-          🏷️
-          <div class="overlay">🔍</div>
+          <img src="img/PortfolioThumimg01.jpg" alt="카페 브랜드 아이덴티티 패키지 썸네일">
+          <div class="overlay"><img src="img/icon-search.png" alt="작품 확대 보기"></div>
         </div>
         <div class="portfolio-info">
           <div class="portfolio-category">Brand Identity</div>
@@ -917,10 +999,10 @@
           </div>
         </div>
       </div>
-      <div class="portfolio-card fade-up" style="transition-delay:0.08s">
+      <div class="portfolio-card fade-up" style="transition-delay:0.08s" data-portfolio="02">
         <div class="portfolio-thumb" style="background:#cc4a34">
-          📱
-          <div class="overlay">🔍</div>
+          <img src="img/PortfolioThumimg02.jpg" alt="독립 서점 앱 UI 프로토타입 썸네일">
+          <div class="overlay"><img src="img/icon-search.png" alt="작품 확대 보기"></div>
         </div>
         <div class="portfolio-info">
           <div class="portfolio-category">UI/UX Design</div>
@@ -933,10 +1015,10 @@
           </div>
         </div>
       </div>
-      <div class="portfolio-card fade-up" style="transition-delay:0.16s">
+      <div class="portfolio-card fade-up" style="transition-delay:0.16s" data-portfolio="03">
         <div class="portfolio-thumb" style="background:#a83a28">
-          🌿
-          <div class="overlay">🔍</div>
+          <img src="img/PortfolioThumimg03.jpg" alt="환경 캠페인 포스터 시리즈 썸네일">
+          <div class="overlay"><img src="img/icon-search.png" alt="작품 확대 보기"></div>
         </div>
         <div class="portfolio-info">
           <div class="portfolio-category">Poster Design</div>
@@ -949,10 +1031,10 @@
           </div>
         </div>
       </div>
-      <div class="portfolio-card fade-up" style="transition-delay:0.24s">
+      <div class="portfolio-card fade-up" style="transition-delay:0.24s" data-portfolio="04">
         <div class="portfolio-thumb" style="background:#1a4a5c">
-          📖
-          <div class="overlay">🔍</div>
+          <img src="img/PortfolioThumimg04.jpg" alt="학교 졸업앨범 편집 디자인 썸네일">
+          <div class="overlay"><img src="img/icon-search.png" alt="작품 확대 보기"></div>
         </div>
         <div class="portfolio-info">
           <div class="portfolio-category">Editorial Design</div>
@@ -965,10 +1047,10 @@
           </div>
         </div>
       </div>
-      <div class="portfolio-card fade-up" style="transition-delay:0.32s">
+      <div class="portfolio-card fade-up" style="transition-delay:0.32s" data-portfolio="05">
         <div class="portfolio-thumb" style="background:#7a5c6a">
-          ✨
-          <div class="overlay">🔍</div>
+          <img src="img/PortfolioThumimg05.jpg" alt="소상공인 SNS 콘텐츠 패키지 썸네일">
+          <div class="overlay"><img src="img/icon-search.png" alt="작품 확대 보기"></div>
         </div>
         <div class="portfolio-info">
           <div class="portfolio-category">SNS Contents</div>
@@ -981,10 +1063,10 @@
           </div>
         </div>
       </div>
-      <div class="portfolio-card fade-up" style="transition-delay:0.4s">
+      <div class="portfolio-card fade-up" style="transition-delay:0.4s" data-portfolio="06">
         <div class="portfolio-thumb" style="background:#2d6a4f">
-          🎥
-          <div class="overlay">🔍</div>
+          <img src="img/PortfolioThumimg06.jpg" alt="학교 홍보 영상 편집 썸네일">
+          <div class="overlay"><img src="img/icon-search.png" alt="작품 확대 보기"></div>
         </div>
         <div class="portfolio-info">
           <div class="portfolio-category">Motion / Video</div>
@@ -1004,11 +1086,13 @@
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-inner">
+    <div class="contact-intro fade-up">
+      <span class="section-tag" style="background:rgba(204,74,52,0.2);color:#cc4a34">Contact</span>
+      <h2 class="section-title">함께 만들어요</h2>
+      <p class="section-sub">채용 문의, 인턴십, 프리랜서 협업 모두 환영합니다. 편하게 연락 주세요!</p>
+    </div>
     <div class="contact-grid">
-      <div class="fade-up">
-        <span class="section-tag" style="background:rgba(204,74,52,0.2);color:#cc4a34">Contact</span>
-        <h2 class="section-title">함께 만들어요</h2>
-        <p class="section-sub">채용 문의, 인턴십, 프리랜서 협업 모두 환영합니다. 편하게 연락 주세요!</p>
+      <div class="fade-up" style="transition-delay:0.05s">
         <div class="contact-info">
           <div class="contact-item">
             <div class="contact-item-icon">📧</div>
@@ -1035,7 +1119,7 @@
             <div class="contact-item-icon">🎓</div>
             <div>
               <div class="contact-item-label">졸업 예정</div>
-              <div class="contact-item-value">○○예술고 2026년 2월</div>
+              <div class="contact-item-value">뷰티예술고등학교 2026년 2월</div>
             </div>
           </div>
         </div>
@@ -1044,7 +1128,6 @@
         <div class="contact-form">
           <input type="text" class="form-input" placeholder="성함 또는 업체명">
           <input type="email" class="form-input" placeholder="이메일">
-          <input type="text" class="form-input" placeholder="문의 유형 (채용 / 인턴 / 협업)">
           <textarea class="form-input" placeholder="문의 내용을 자유롭게 적어주세요 :)"></textarea>
           <button class="btn-primary" style="justify-content:center;width:100%">✉️ 메시지 보내기</button>
         </div>
@@ -1054,10 +1137,111 @@
 </section>
 
 <footer>
-  <p>© 2025 [이름] · 포트폴리오 · 모든 작업물의 저작권은 제작자에게 있습니다</p>
+  <p>© 2026 [이름] · 포트폴리오 · 모든 작업물의 저작권은 제작자에게 있습니다</p>
 </footer>
 
+<div class="portfolio-modal" id="portfolioModal">
+  <button class="portfolio-modal-close" id="portfolioModalClose" aria-label="이미지 닫기">×</button>
+  <img id="portfolioModalImage" src="" alt="포트폴리오 원본 이미지">
+</div>
+
 <script>
+  // ── 자격증 캐러셀 ──
+  (function() {
+    const track    = document.getElementById('certsTrack');
+    const dotsWrap = document.getElementById('certsDots');
+    if (!track) return;
+
+    const cards = track.querySelectorAll('.cert-card');
+    const total = cards.length;
+    const cardsPerDot = total === 4 ? 2 : 1;
+    const dotCount = Math.ceil(total / cardsPerDot);
+    let current = 0;
+    let isDragging = false;
+    let startX = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+
+    // 도트 생성 (카드 4개일 때는 2개 도트로 페이지화)
+    Array.from({ length: dotCount }).forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'certs-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', (i + 1) + '번 페이지');
+      dot.addEventListener('click', () => goTo(i * cardsPerDot));
+      dotsWrap.appendChild(dot);
+    });
+
+    function getCardWidth() {
+      const card = cards[0];
+      const gap = 19; // 1.2rem ≈ 19px
+      return card.offsetWidth + gap;
+    }
+
+    function updateDots() {
+      const activeDotIndex = Math.floor(current / cardsPerDot);
+      dotsWrap.querySelectorAll('.certs-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === activeDotIndex);
+      });
+    }
+
+    function goTo(index) {
+      current = Math.max(0, Math.min(index, total - 1));
+      currentTranslate = -current * getCardWidth();
+      currentTranslate = Math.max(getMaxTranslate(), Math.min(0, currentTranslate));
+      prevTranslate = currentTranslate;
+      track.style.transform = `translateX(${currentTranslate}px)`;
+      updateDots();
+    }
+
+    function getMaxTranslate() {
+      const wrap = track.parentElement;
+      return -(track.scrollWidth - wrap.offsetWidth);
+    }
+
+    // 마우스 드래그
+    track.addEventListener('mousedown', e => {
+      isDragging = true;
+      startX = e.clientX;
+      track.classList.add('no-transition');
+    });
+    document.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      const raw = prevTranslate + (e.clientX - startX);
+      currentTranslate = Math.max(getMaxTranslate(), Math.min(0, raw));
+      track.style.transform = `translateX(${currentTranslate}px)`;
+    });
+    document.addEventListener('mouseup', e => {
+      if (!isDragging) return;
+      isDragging = false;
+      track.classList.remove('no-transition');
+      const diff = e.clientX - startX;
+      if (diff < -50) goTo(current + 1);
+      else if (diff > 50) goTo(current - 1);
+      else goTo(current);
+    });
+
+    // 터치 스와이프
+    track.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+      track.classList.add('no-transition');
+    }, { passive: true });
+    track.addEventListener('touchmove', e => {
+      const raw = prevTranslate + (e.touches[0].clientX - startX);
+      currentTranslate = Math.max(getMaxTranslate(), Math.min(0, raw));
+      track.style.transform = `translateX(${currentTranslate}px)`;
+    }, { passive: true });
+    track.addEventListener('touchend', e => {
+      track.classList.remove('no-transition');
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff < -50) goTo(current + 1);
+      else if (diff > 50) goTo(current - 1);
+      else goTo(current);
+    });
+
+    // 링크 클릭 방지(드래그 중)
+    track.addEventListener('dragstart', e => e.preventDefault());
+  })();
+
   // ── 햄버거 메뉴 ──
   function toggleMenu() {
     document.getElementById('mobileMenu').classList.toggle('open');
@@ -1077,6 +1261,39 @@
     });
   }, { threshold: 0.15 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ── 포트폴리오 이미지 모달 ──
+  const portfolioModal = document.getElementById('portfolioModal');
+  const portfolioModalImage = document.getElementById('portfolioModalImage');
+  const portfolioModalClose = document.getElementById('portfolioModalClose');
+
+  function getPortfolioImagePath(num) {
+    const mobile = window.matchMedia('(max-width: 768px)').matches;
+    return mobile ? `img/Portfolioimg${num}_m.jpg` : `img/Portfolioimg${num}.jpg`;
+  }
+
+  document.querySelectorAll('.portfolio-card[data-portfolio]').forEach(card => {
+    card.addEventListener('click', () => {
+      const num = card.dataset.portfolio;
+      portfolioModalImage.src = getPortfolioImagePath(num);
+      portfolioModal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closePortfolioModal() {
+    portfolioModal.classList.remove('show');
+    portfolioModalImage.src = '';
+    document.body.style.overflow = '';
+  }
+
+  portfolioModalClose.addEventListener('click', closePortfolioModal);
+  portfolioModal.addEventListener('click', (e) => {
+    if (e.target === portfolioModal) closePortfolioModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && portfolioModal.classList.contains('show')) closePortfolioModal();
+  });
 
   // ── PDF 모달 ──
   function openModal() {
