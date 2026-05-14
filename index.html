@@ -632,7 +632,8 @@
     nav { padding: 0 4%; }
     .nav-links { display: none; }
     .hamburger { display: flex; }
-    .btn-pdf span { display: none; }
+    .btn-pdf .btn-pdf-icon { display: none; }
+    .btn-pdf span { display: inline; }
 
     .hero-content { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
     .hero-image-wrap { order: -1; }
@@ -645,7 +646,12 @@
 
     section { padding: 60px 4%; }
     .exp-item { grid-template-columns: 44px 1fr; gap: 0.8rem; }
-    .exp-period { display: none; }
+    .exp-period {
+      display: block;
+      text-align: left;
+      padding-top: 0;
+      margin-bottom: 0.4rem;
+    }
   }
 
   @media (min-width: 481px) and (max-width: 725px) {
@@ -758,8 +764,8 @@
     <li><a href="#works">작품</a></li>
     <li><a href="#contact">연락처</a></li>
   </ul>
-  <button class="btn-pdf" onclick="openModal()">
-    ⬇ <span>PDF 다운로드</span>
+  <button class="btn-pdf" onclick="handlePdfBtn()">
+    <span class="btn-pdf-icon">⬇</span><span>PDF 다운로드</span>
   </button>
   <button class="hamburger" onclick="toggleMenu()" aria-label="메뉴">
     <span></span><span></span><span></span>
@@ -1179,15 +1185,15 @@
 
     const cards = track.querySelectorAll('.cert-card');
     const total = cards.length;
-    const cardsPerDot = total === 4 ? 2 : 1;
-    const dotCount = Math.ceil(total / cardsPerDot);
+    const cardsPerDot = 1;
+    const dotCount = total;
     let current = 0;
     let isDragging = false;
     let startX = 0;
     let currentTranslate = 0;
     let prevTranslate = 0;
 
-    // 도트 생성 (카드 4개일 때는 2개 도트로 페이지화)
+    // 도트 생성 (카드 1개 = 도트 1개)
     Array.from({ length: dotCount }).forEach((_, i) => {
       const dot = document.createElement('button');
       dot.className = 'certs-dot' + (i === 0 ? ' active' : '');
@@ -1319,6 +1325,11 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && portfolioModal.classList.contains('show')) closePortfolioModal();
   });
+
+  // ── PDF 버튼: 항상 img/portfolio.pdf 직접 열기 ──
+  function handlePdfBtn() {
+    window.open('img/portfolio.pdf', '_blank');
+  }
 
   // ── PDF 모달 ──
   function openModal() {
